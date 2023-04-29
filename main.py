@@ -1,5 +1,6 @@
-import time
+import time as clock
 def test():
-    time = time.time()
-    
-    
+    time = clock.time()
+    # 10 second
+    print(int(time))
+test()
