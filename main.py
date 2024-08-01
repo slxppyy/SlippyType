@@ -19,6 +19,7 @@ def app():
       global endTime
       endTime = t.time()
       print("Test 1 Complete!")
+      
 # showText
 
    textDisplay = ctk.CTkLabel(root, text = phrase, font = ("Lilita One", 20), corner_radius=15)
