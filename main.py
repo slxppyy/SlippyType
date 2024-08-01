@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import time as t
-
+from random import choice 
 def app():
     
     # __init__ 
@@ -9,7 +9,8 @@ def app():
    root.wm_title("SlippyType")
    root.resizable(False, False)
 
-   phrase = "The quick brown fox jumped over the lazy dog."
+   phraseList = ["Blue garden music smile large dream silent fire", "River stone quick jump bright star field moon", "Quiet lake winter frost golden sun evening shadow", "Ocean wave gentle breeze forest path night sky", "Silver mountain sunrise calm whisper soft breeze"]
+   phrase = choice(phraseList)
 
    def levDistance(s1, s2):
     if len(s1) < len(s2):
@@ -92,7 +93,7 @@ def app():
 
 # showText
 
-   textDisplay = ctk.CTkLabel(root, text = phrase, font = ("Lilita One", 20), corner_radius=15)
+   textDisplay = ctk.CTkLabel(root, text = phrase, font = ("Lilita One", 18), corner_radius=15)
    textDisplay.place(x = 250, y = 75, anchor = 'center')
 
 # typeText
