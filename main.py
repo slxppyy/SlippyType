@@ -1,7 +1,6 @@
 import customtkinter as ctk
 import time as t
 from random import choice 
-
 def app():
     
     # __init__ 
@@ -9,7 +8,7 @@ def app():
    root.geometry("500x300+700+200")
    root.wm_title("SlippyType")
    root.resizable(False, False)
-
+   
    phraseList = ["Blue garden music smile large dream silent fire", "River stone quick jump bright star field moon", "Quiet lake winter frost golden sun evening shadow", "Ocean wave gentle breeze forest path night sky", "Silver mountain sunrise calm whisper soft breeze"]
    phrase = choice(phraseList)
 
@@ -32,32 +31,18 @@ def app():
 
     return previous_row[-1]
 
-   def onFailure(failureCause):
-      # create topLevel
-      failTopLevel = ctk.CTkToplevel(root)
-      failTopLevel.geometry("200x200+850+250")
-      failTopLevel.wm_title("Invalid")
-      failTopLevel.resizable(False, False)
-      failTopLevel.attributes('-topmost', True)
 
-      # failText
-      failText = ctk.CTkLabel(failTopLevel, text = "invalid test", font = ("Lilita One", 22))
-      failText.place(x = 100, y = 50, anchor = 'center')
-
-      failureCauseText = ctk.CTkLabel(failTopLevel, text = failureCause, font = ("Lilita One", 22))
-      failureCauseText.place(x = 100, y = 75, anchor = 'center')
-
-      destroyButton = ctk.CTkButton(failTopLevel, text = "Close", corner_radius=15, command = lambda: [clearText(), failTopLevel.destroy()], hover = True, fg_color="#b80b0b", hover_color="#e82323", font = ("Lilita One", 18))
-      destroyButton.place(x = 100, y = 150, anchor = 'center')
-
-      
-
-   def startTimer(event):
+   def startTimer(event=None):
       global startTime
       startTime = t.time()
+      realTime()
       startButton.configure(state = "disabled")
+      
+   def realTime():
+      print(phrase)
+      print("Check")
 
-   def endTimer(event):
+   def endTimer(event=None):
     global endTime
     endTime = t.time()
 
@@ -75,14 +60,15 @@ def app():
     inputText = typeText.get()
 
     # Calculate Levenshtein Distance
-    distance = levDistance(phrase, inputText)
-    accuracyInt = 100 * (1 - distance / max(len(phrase), len(inputText)))
-    accuracyPercentage = str(int(accuracyInt)) + "%"
+    
+    try:
+      distance = levDistance(phrase, inputText)
+      accuracyInt = 100 * (1 - distance / max(len(phrase), len(inputText)))
+      accuracyPercentage = str(int(accuracyInt)) + "%"
+    except Exception as e:
+       print(e)
+       accuracyPercentage = "0%"
 
-    if accuracyInt <= 60:
-       failureCause = "(low accuracy)"
-       onFailure(failureCause)
-       return  
 
     topLevel = ctk.CTkToplevel(root)
     topLevel.geometry("200x200+850+250")
@@ -113,12 +99,12 @@ def app():
       startButton.configure(state = "enabled")
 
 # clearButton
-   clearButton = ctk.CTkButton(root, text = "Clear", font = ("Lilita One", 20), corner_radius=15, command = clearText, fg_color="#b80b0b", hover_color="#e82323", hover = True)
+   clearButton = ctk.CTkButton(root, text = "Restart", font = ("Lilita One", 20), corner_radius=15, command = lambda: [clearText(), startTest()], fg_color="#b80b0b", hover_color="#e82323", hover = True)
    clearButton.place(x = 250, y = 230, anchor = 'center')
 
 # showText
 
-   textDisplay = ctk.CTkLabel(root, text = phrase, font = ("Lilita One", 18), corner_radius=15)
+   textDisplay = ctk.CTkLabel(root, text = phrase, font = ("Lilita One", 20), corner_radius=15)
    textDisplay.place(x = 250, y = 75, anchor = 'center')
 
 # typeText
@@ -130,6 +116,11 @@ def app():
 
    startButton = ctk.CTkButton(root, text = "Start", font=("Lilita One", 18), hover = True, corner_radius=15, command = startTimer, fg_color="#194ee0", hover_color="#2c62f5")
    startButton.place(x = 250, y = 190, anchor = 'center')
+
+   def startTest():
+      phraseList = ["Blue garden music smile large dream silent fire", "River stone quick jump bright star field moon", "Quiet lake winter frost golden sun evening shadow", "Ocean wave gentle breeze forest path night sky", "Silver mountain sunrise calm whisper soft breeze"]
+      phrase = choice(phraseList)
+      textDisplay.configure(text = phrase)
 
 # Enter keyBind
 
