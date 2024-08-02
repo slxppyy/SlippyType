@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import time as t
 from random import choice 
+
 def app():
     
     # __init__ 
@@ -31,6 +32,25 @@ def app():
 
     return previous_row[-1]
 
+   def onFailure(failureCause):
+      # create topLevel
+      failTopLevel = ctk.CTkToplevel(root)
+      failTopLevel.geometry("200x200+850+250")
+      failTopLevel.wm_title("Invalid")
+      failTopLevel.resizable(False, False)
+      failTopLevel.attributes('-topmost', True)
+
+      # failText
+      failText = ctk.CTkLabel(failTopLevel, text = "invalid test", font = ("Lilita One", 22))
+      failText.place(x = 100, y = 50, anchor = 'center')
+
+      failureCauseText = ctk.CTkLabel(failTopLevel, text = failureCause, font = ("Lilita One", 22))
+      failureCauseText.place(x = 100, y = 75, anchor = 'center')
+
+      destroyButton = ctk.CTkButton(failTopLevel, text = "Close", corner_radius=15, command = lambda: [clearText(), failTopLevel.destroy()], hover = True, fg_color="#b80b0b", hover_color="#e82323", font = ("Lilita One", 18))
+      destroyButton.place(x = 100, y = 150, anchor = 'center')
+
+      
 
    def startTimer(event):
       global startTime
@@ -58,6 +78,11 @@ def app():
     distance = levDistance(phrase, inputText)
     accuracyInt = 100 * (1 - distance / max(len(phrase), len(inputText)))
     accuracyPercentage = str(int(accuracyInt)) + "%"
+
+    if accuracyInt <= 60:
+       failureCause = "(low accuracy)"
+       onFailure(failureCause)
+       return  
 
     topLevel = ctk.CTkToplevel(root)
     topLevel.geometry("200x200+850+250")
