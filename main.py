@@ -51,6 +51,8 @@ def app():
         topLevel.resizable(False, False)
         topLevel.attributes('-topmost', True) 
 
+        
+
         # resultLabel
         wpmLabel = ctk.CTkLabel(topLevel, text="wpm", font=("Lilita One", 16))
         wpmLabel.pack()
